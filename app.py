@@ -123,9 +123,10 @@ if model is not None and vectorizer is not None:
             st.markdown("Pesan ini terdeteksi sebagai **pesan normal/valid**.")
         
         # Expander untuk Detail Preprocessing (Akan menggunakan lebar penuh karena di luar kolom)
-        with st.expander("Lihat Detail Preprocessing"):
-            st.caption("Langkah-langkah yang dilakukan pada teks Anda sebelum diprediksi:")
-            st.code(cleaned_text, language='text')
+        #with st.expander("Lihat Detail Preprocessing"):
+        #    st.caption("Langkah-langkah yang dilakukan pada teks Anda sebelum diprediksi:")
+         #   st.code(cleaned_text, language='text')
 
 else:
     st.error("Aplikasi tidak dapat berjalan karena model atau vectorizer gagal dimuat. Cek file .joblib Anda.")
+
