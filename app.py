@@ -103,7 +103,7 @@ if model is not None and vectorizer is not None:
     cleaned_text = ""
     
     with col1:
-        if st.button("Analisis Pesan", use_container_width=True, type="primary"):
+        if st.button("Analisis Pesan", use_container_width=False, type="primary"):
             if user_input:
                 # Lakukan prediksi
                 result, cleaned_text = predict_text(user_input, model, vectorizer, STEMMER, LIST_STOPWORDS)
@@ -123,10 +123,11 @@ if model is not None and vectorizer is not None:
             st.markdown("Pesan ini terdeteksi sebagai **pesan normal/valid**.")
         
         # Expander untuk Detail Preprocessing (Akan menggunakan lebar penuh karena di luar kolom)
-        #with st.expander("Lihat Detail Preprocessing"):
+        # with st.expander("Lihat Detail Preprocessing"):
         #    st.caption("Langkah-langkah yang dilakukan pada teks Anda sebelum diprediksi:")
-         #   st.code(cleaned_text, language='text')
+        #   st.code(cleaned_text, language='text')
 
 else:
     st.error("Aplikasi tidak dapat berjalan karena model atau vectorizer gagal dimuat. Cek file .joblib Anda.")
+
 
