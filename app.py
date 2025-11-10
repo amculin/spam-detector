@@ -120,13 +120,14 @@ if model is not None and vectorizer is not None:
                     st.success("✅ BUKAN SPAM (HAM) ✅", icon="⭐")
                     st.markdown("Pesan ini terdeteksi sebagai **pesan normal/valid**.")
                 
-                with st.expander("Lihat Detail Preprocessing", width=150, height=10):
-                    st.caption("Langkah-langkah yang dilakukan pada teks Anda sebelum diprediksi:")
+                with st.expander("Lihat Detail Preprocessing"):
+                    st.caption("Langkah-langkah yang dilakukan pada teks Anda sebelum diprediksi:", width=150, height=10)
                     st.code(cleaned_text, language='text')
             else:
                 st.warning("Silakan masukkan teks pesan terlebih dahulu untuk dianalisis.")
 else:
 
     st.error("Aplikasi tidak dapat berjalan karena model atau vectorizer gagal dimuat. Cek file .joblib Anda.")
+
 
 
