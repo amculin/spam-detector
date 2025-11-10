@@ -9,15 +9,15 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
-# Konfigurasi halaman Streamlit
+# --- 0. Konfigurasi Halaman Streamlit ---
+# Mengatur layout menjadi 'wide' (lebar) untuk memberikan ruang lebih pada elemen (termasuk st.code)
 st.set_page_config(page_title="Detektor Spam Bahasa Indonesia", layout="wide")
 
-# --- 1. Muat Model dan Vectorizer (Hanya Sekali) ---
+# --- 1. Muat Sumber Daya (Model, Vectorizer, NLTK, Stemmer) ---
 @st.cache_resource
 def load_resources():
     """
-    Memuat model dan vectorizer (joblib) serta memastikan semua
-    NLTK resources terunduh di lingkungan deployment.
+    Memuat model dan vectorizer, serta memastikan semua NLTK resources terunduh.
     """
     try:
         # Pemuatan Model dan Vectorizer
@@ -27,8 +27,7 @@ def load_resources():
         # Pengunduhan NLTK Resources secara eksplisit (PENTING untuk deployment)
         nltk.download('stopwords', quiet=True)
         nltk.download('punkt', quiet=True) 
-        # FIX: Tambahkan 'punkt_tab' untuk mengatasi LookupError Anda
-        nltk.download('punkt_tab', quiet=True) 
+        nltk.download('punkt_tab', quiet=True) # FIX untuk LookupError punkt_tab
         
         # Inisialisasi Sumber Daya NLP
         list_stopwords = set(stopwords.words('indonesian'))
@@ -50,7 +49,6 @@ model, vectorizer, LIST_STOPWORDS, STEMMER = load_resources()
 def text_preprocessing(text, stemmer, list_stopwords):
     """Melakukan langkah preprocessing yang sama seperti saat pelatihan model."""
     
-    # Pastikan stemmer berhasil diinisialisasi
     if not stemmer:
         return text 
 
@@ -61,7 +59,7 @@ def text_preprocessing(text, stemmer, list_stopwords):
     # Hapus punctuation
     text = text.translate(str.maketrans('', '', string.punctuation))
     
-    # Tokenisasi (membutuhkan 'punkt')
+    # Tokenisasi
     tokens = word_tokenize(text)
     
     # Filtering (Stopword removal)
@@ -80,7 +78,6 @@ def predict_text(text, model, vectorizer, stemmer, list_stopwords):
     cleaned_text = text_preprocessing(text, stemmer, list_stopwords)
     
     # 2. Transformasi menggunakan vectorizer
-    # Vectorizer harus menggunakan input dalam bentuk list/array
     text_vectorized = vectorizer.transform([cleaned_text])
     
     # 3. Prediksi
@@ -90,45 +87,45 @@ def predict_text(text, model, vectorizer, stemmer, list_stopwords):
 
 # --- 4. Antarmuka Streamlit (Main App) ---
 st.title("📧 Detektor Spam Pesan Bahasa Indonesia")
-st.markdown("""
-    Aplikasi ini menggunakan model **Naive Bayes** yang dilatih untuk mengklasifikasikan pesan 
-    teks dalam Bahasa Indonesia sebagai **Spam** atau **Bukan Spam (Ham)**.
-""")
 st.markdown("---")
 
 if model is not None and vectorizer is not None:
-    # Area input teks
+    # Area input teks (Lebar penuh karena diletakkan langsung di main content)
     user_input = st.text_area("Masukkan Pesan di Sini:", 
                               placeholder="Ketik pesan yang ingin Anda analisis (misal: Selamat! Anda memenangkan undian berhadiah).", 
                               height=150)
 
-    col1, col2 = st.columns([1, 4])
+    # Pembagian kolom untuk tombol, hanya col1 yang digunakan untuk tombol
+    col1, col2 = st.columns([1, 4]) 
+    
+    # Variabel untuk menyimpan hasil prediksi agar bisa diakses di luar if st.button
+    result = None
+    cleaned_text = ""
+    
     with col1:
         if st.button("Analisis Pesan", use_container_width=True, type="primary"):
             if user_input:
                 # Lakukan prediksi
                 result, cleaned_text = predict_text(user_input, model, vectorizer, STEMMER, LIST_STOPWORDS)
-                
-                # Tampilkan hasil
-                st.subheader("Hasil Prediksi:")
-                
-                # Hasil 1 = Spam, Hasil 0 = Ham
-                if result == 1:
-                    st.error("🚨 SPAM 🚨", icon="🚫")
-                    st.markdown("Pesan ini sangat mungkin adalah **pesan spam**.")
-                else:
-                    st.success("✅ BUKAN SPAM (HAM) ✅", icon="⭐")
-                    st.markdown("Pesan ini terdeteksi sebagai **pesan normal/valid**.")
-                
-                with st.expander("Lihat Detail Preprocessing"):
-                    st.caption("Langkah-langkah yang dilakukan pada teks Anda sebelum diprediksi:")
-                    st.code(cleaned_text, language='text')
             else:
                 st.warning("Silakan masukkan teks pesan terlebih dahulu untuk dianalisis.")
+
+    # Tampilkan Hasil dan Expander di bawah kolom (Lebar Penuh)
+    if user_input and result is not None:
+        st.subheader("Hasil Prediksi:")
+        
+        # Hasil 1 = Spam, Hasil 0 = Ham
+        if result == 1:
+            st.error("🚨 SPAM 🚨", icon="🚫")
+            st.markdown("Pesan ini sangat mungkin adalah **pesan spam**.")
+        else:
+            st.success("✅ BUKAN SPAM (HAM) ✅", icon="⭐")
+            st.markdown("Pesan ini terdeteksi sebagai **pesan normal/valid**.")
+        
+        # Expander untuk Detail Preprocessing (Akan menggunakan lebar penuh karena di luar kolom)
+        with st.expander("Lihat Detail Preprocessing"):
+            st.caption("Langkah-langkah yang dilakukan pada teks Anda sebelum diprediksi:")
+            st.code(cleaned_text, language='text')
+
 else:
-
     st.error("Aplikasi tidak dapat berjalan karena model atau vectorizer gagal dimuat. Cek file .joblib Anda.")
-
-
-
-
