@@ -92,7 +92,7 @@ def predict_text(text, model, vectorizer, stemmer, list_stopwords):
 app.title("Detektor Teks Spam Bahasa Indonesia")
 app.image(
     "https://plai.ac.id/assets/images/logo/BMD-LOGO.webp",
-    width=stretch,
+    width="stretch",
     caption="Logo PLAI BMD"
 )
 app.markdown("---")
