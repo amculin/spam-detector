@@ -106,7 +106,7 @@ if model is not None and vectorizer is not None:
                               height=250)
 
     # Pembagian kolom untuk tombol, hanya col2 yang digunakan untuk tombol
-    col1, col2, col3 = app.columns([2, 1, 1]) 
+    col1, col2, col3 = app.columns([2, 1, 2]) 
     
     # Variabel untuk menyimpan hasil prediksi agar bisa diakses di luar if app.button
     result = None
