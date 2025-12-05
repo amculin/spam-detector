@@ -13,7 +13,7 @@ from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 app.set_page_config(
     page_title="Detektor Teks Spam Bahasa Indonesia",
     page_icon="https://plai.ac.id/assets/images/logo/MAIN-min.png",
-    layout="centered"
+    layout="wide"
 )
 
 # --- 1. Muat Sumber Daya (Model, Vectorizer, NLTK, Stemmer) ---
@@ -91,7 +91,7 @@ def predict_text(text, model, vectorizer, stemmer, list_stopwords):
 # --- 4. Antarmuka Streamlit (Main App) ---
 app.image(
     "https://plai.ac.id/assets/images/logo/BMD-LOGO.webp",
-    width="stretch"
+    width=900
 )
 app.title(
     "Detektor Teks Spam Bahasa Indonesia",
