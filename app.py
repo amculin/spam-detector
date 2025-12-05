@@ -21,8 +21,8 @@ def load_resources():
     """
     try:
         # Pemuatan Model dan Vectorizer
-        model = joblib.load("spam_model_svm.joblib")
-        vectorizer = joblib.load("tfidf_vectorizer_svm.joblib")
+        model = joblib.load("spam_pesan_model_svm.joblib")
+        vectorizer = joblib.load("tfidf_vectorizer_spam_svm.joblib")
         
         # Pengunduhan NLTK Resources secara eksplisit (PENTING untuk deployment)
         nltk.download('stopwords', quiet=True)
@@ -134,6 +134,7 @@ if model is not None and vectorizer is not None:
 
 else:
     st.error("Aplikasi tidak dapat berjalan karena model atau vectorizer gagal dimuat. Cek file .joblib Anda.")
+
 
 
 
