@@ -89,10 +89,14 @@ def predict_text(text, model, vectorizer, stemmer, list_stopwords):
     return prediction[0], cleaned_text
 
 # --- 4. Antarmuka Streamlit (Main App) ---
-app.image(
-    "https://plai.ac.id/assets/images/logo/BMD-LOGO.webp",
-    width=900
-)
+col1, col2, col3 = app.columns(3)
+
+with col2:
+    app.image(
+        "https://plai.ac.id/assets/images/logo/BMD-LOGO.webp",
+        width=900
+    )
+
 app.title(
     "Detektor Teks Spam Bahasa Indonesia",
     text_alignment="center"
