@@ -105,8 +105,13 @@ if model is not None and vectorizer is not None:
     with col1:
         if st.button("Analisis Pesan", use_container_width=True, type="primary"):
             if user_input:
-                # Lakukan prediksi
-                result, cleaned_text = predict_text(user_input, model, vectorizer, STEMMER, LIST_STOPWORDS)
+                wordCount = len(user_input.split())
+
+                if (wordCount < 10):
+                    st.warning("Silakan masukkan teks lebih dari 10 kata")
+                else:
+                    # Lakukan prediksi
+                    result, cleaned_text = predict_text(user_input, model, vectorizer, STEMMER, LIST_STOPWORDS)
             else:
                 st.warning("Silakan masukkan teks pesan terlebih dahulu untuk dianalisis.")
 
@@ -129,6 +134,7 @@ if model is not None and vectorizer is not None:
 
 else:
     st.error("Aplikasi tidak dapat berjalan karena model atau vectorizer gagal dimuat. Cek file .joblib Anda.")
+
 
 
 
