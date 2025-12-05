@@ -89,11 +89,13 @@ def predict_text(text, model, vectorizer, stemmer, list_stopwords):
     return prediction[0], cleaned_text
 
 # --- 4. Antarmuka Streamlit (Main App) ---
-app.title("Detektor Teks Spam Bahasa Indonesia")
 app.image(
     "https://plai.ac.id/assets/images/logo/BMD-LOGO.webp",
-    width="stretch",
-    caption="Logo PLAI BMD"
+    width="stretch"
+)
+app.title(
+    "Detektor Teks Spam Bahasa Indonesia",
+    text_alignment="center"
 )
 app.markdown("---")
 
@@ -101,16 +103,16 @@ if model is not None and vectorizer is not None:
     # Area input teks (Lebar penuh karena diletakkan langsung di main content)
     user_input = app.text_area("Masukkan Pesan di Sini:", 
                               placeholder="Ketik pesan yang ingin Anda analisis (misal: Selamat! Anda memenangkan undian berhadiah).", 
-                              height=150)
+                              height=250)
 
-    # Pembagian kolom untuk tombol, hanya col1 yang digunakan untuk tombol
-    col1, col2 = app.columns([1, 4]) 
+    # Pembagian kolom untuk tombol, hanya col2 yang digunakan untuk tombol
+    col1, col2, col3 = app.columns([2, 1, 1]) 
     
     # Variabel untuk menyimpan hasil prediksi agar bisa diakses di luar if app.button
     result = None
     cleaned_text = ""
     
-    with col1:
+    with col2:
         if app.button("Analisis Pesan", use_container_width=True, type="primary"):
             if user_input:
                 result, cleaned_text = predict_text(user_input, model, vectorizer, STEMMER, LIST_STOPWORDS)
@@ -127,7 +129,7 @@ if model is not None and vectorizer is not None:
             app.markdown("Pesan ini sangat mungkin adalah **pesan spam**.")
         else:
             app.success("✅ BUKAN SPAM (HAM) ✅", icon="⭐")
-            app.markdown("Pesan ini terdeteksi sebagai **pesan normal/valid**.")
+            app.markdown("Pesan ini terdeteksi sebagai **pesan normal/non spam**.")
         
         # Expander untuk Detail Preprocessing (Akan menggunakan lebar penuh karena di luar kolom)
         with app.expander("Lihat Detail Preprocessing"):
