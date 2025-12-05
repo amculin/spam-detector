@@ -13,7 +13,7 @@ from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 app.set_page_config(
     page_title="Detektor Teks Spam Bahasa Indonesia",
     page_icon="https://plai.ac.id/assets/images/logo/MAIN-min.png",
-    layout="centered"
+    layout="wide"
 )
 
 # --- 1. Muat Sumber Daya (Model, Vectorizer, NLTK, Stemmer) ---
@@ -138,6 +138,7 @@ if model is not None and vectorizer is not None:
 
 else:
     app.error("Aplikasi tidak dapat berjalan karena model atau vectorizer gagal dimuat. Cek file .joblib Anda.")
+
 
 
 
