@@ -89,7 +89,12 @@ def predict_text(text, model, vectorizer, stemmer, list_stopwords):
     return prediction[0], cleaned_text
 
 # --- 4. Antarmuka Streamlit (Main App) ---
-app.title("📧 Detektor Spam Pesan Bahasa Indonesia")
+app.title("Detektor Teks Spam Bahasa Indonesia")
+app.image(
+    "https://plai.ac.id/assets/images/logo/BMD-LOGO.webp",
+    width=stretch,
+    caption="Logo PLAI BMD"
+)
 app.markdown("---")
 
 if model is not None and vectorizer is not None:
@@ -108,13 +113,7 @@ if model is not None and vectorizer is not None:
     with col1:
         if app.button("Analisis Pesan", use_container_width=True, type="primary"):
             if user_input:
-                # wordCount = len(user_input.split())
-
-                #if (wordCount < 5):
-                    #app.warning("Silakan masukkan teks lebih dari 5 kata")
-                #else:
-                    # Lakukan prediksi
-                    result, cleaned_text = predict_text(user_input, model, vectorizer, STEMMER, LIST_STOPWORDS)
+                result, cleaned_text = predict_text(user_input, model, vectorizer, STEMMER, LIST_STOPWORDS)
             else:
                 app.warning("Silakan masukkan teks pesan terlebih dahulu untuk dianalisis.")
 
